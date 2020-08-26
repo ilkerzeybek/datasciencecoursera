@@ -1,0 +1,15 @@
+library(XML)
+fileURL <- "http://www.w3schools.com/xml/simple.xml"
+download.file(fileURL, destfile = "simple.xml")
+doc <- xmlTreeParse("simple.xml", useInternalNodes = TRUE)
+rootNode <- xmlRoot(doc)
+xmlName(rootNode)
+names(rootNode)
+food <- xpathSApply(rootNode, "//name", xmlValue)
+price <- xpathSApply(rootNode, "//price", xmlValue)
+calorie <- xpathSApply(rootNode, "//calories", xmlValue)
+description <- xpathSApply(rootNode, "//description", xmlValue)
+data <- data.frame(food, price, calorie, description)
+data$price <- as.numeric(gsub("\\$", "", data$price))
+data$calorie <- as.numeric(data$calorie)
+data
